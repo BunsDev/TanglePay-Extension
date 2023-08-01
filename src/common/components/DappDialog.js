@@ -135,6 +135,11 @@ export const DappDialog = () => {
                         const res = await IotaSDK.send({ ...curWallet, password }, address, amount, {
                             domain: origin,
                             contract: contract || assets?.contract,
+                            contractExt: {
+                                abiFunc: dappData.abiFunc,
+                                amount: dappData.amount,
+                                token: dappData.showUnit
+                            },
                             token: assets?.name,
                             taggedData,
                             residue,
@@ -465,7 +470,6 @@ export const DappDialog = () => {
                                     showUnit = 'MIOTA'
                                 }
                             }
-
                             let str = I18n.t(abiFunc === 'approve' ? 'apps.approve' : 'apps.send')
                             if (abiFunc && abiFunc !== 'approve' && abiFunc !== 'transfer') {
                                 str = I18n.t('apps.contractFunc').replace('#abiFunc#', abiFunc).replace('#abiParams#', abiParams.join(','))
@@ -486,6 +490,7 @@ export const DappDialog = () => {
                                 return_url,
                                 type,
                                 amount: sendAmount,
+                                showUnit,
                                 address,
                                 taggedData,
                                 contract,

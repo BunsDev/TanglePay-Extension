@@ -217,6 +217,7 @@ export const ActivityList = ({ search }) => {
             const isStake = [2, 3].includes(e.type)
             const isSign = e.type == 4
             const isNft = [7, 8].includes(e.type)
+            const isContract = e?.contractInfo?.contract && e.contractInfo.abiFunc !== 'transfer'
             return (
                 <div
                     key={e.id + i}
@@ -224,13 +225,17 @@ export const ActivityList = ({ search }) => {
                     onClick={() => {
                         e.viewUrl && Base.push(e.viewUrl)
                     }}>
-                    <SvgIcon className='mr20' name={isOutto ? 'outto' : 'into'} size={36} />
+                    <SvgIcon className='mr20' name={isContract ? 'contract' : isOutto ? 'outto' : 'into'} size={36} />
                     <div className='border-b flex flex1 row ac jsb pb15'>
                         <div>
                             {isSign ? (
                                 <div className='fz17 mb5'>TanglePay.Sign</div>
                             ) : isStake ? (
                                 <div className='fz17 mb5'>{I18n.t(isOutto ? 'staking.unstake' : 'staking.stake')}</div>
+                            ) : isContract ? (
+                                <div className='fz17 mb5'>
+                                    {e?.contractInfo?.abiFunc ?? 'Unknown function'}
+                                </div>
                             ) : (
                                 <div className='fz17 mb5'>
                                     {isOutto ? 'To' : 'From'} : {(e.address || '').replace(/(^.{4})(.+)(.{4}$)/, '$1...$3')}
